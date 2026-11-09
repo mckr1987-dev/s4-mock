@@ -1,0 +1,23 @@
+{
+  "name": "s4-mock",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@sap/cds": "^10"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3"
+  },
+  "scripts": {
+    "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "basic",
+        "users": { "s4tech": { "password": "Welcome1" } }
+      }
+    }
+  },
+  "private": true
+}
