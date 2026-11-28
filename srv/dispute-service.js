@@ -17,11 +17,15 @@ export default class ZFI_DISPUTE_SRV extends cds.ApplicationService {
     // AFTER saving: put the invoice on hold
     this.after('CREATE', Disputes, async (_, req) => {
       const d = req.data;
-      const level = d.Type === 'PROMISE' ? 'P' : 'D';
+      const isPromise = d.Type === 'PROMISE';
+      const level = isPromise ? 'P' : 'D';
+      const holdUntil = isPromise ? d.PromisedDate : null;
+
       const rows = await UPDATE(OpenItems)
-        .set({ Level: level })
+        .set({ Level: level, HoldUntil: holdUntil })
         .where({ InvoiceNo: d.InvoiceNo, CompanyCode: d.CompanyCode });
-      LOG.info(`Case ${d.CaseNo}: invoice ${d.InvoiceNo} set to level ${level} (${rows} row updated)`);
+
+      LOG.info(`Case ${d.CaseNo}: invoice ${d.InvoiceNo} set to level ${level}, hold until ${holdUntil ?? 'removed'} (${rows} row updated)`);
     });
 
     return super.init();

@@ -18,7 +18,8 @@ entity OpenItems {
       Currency    : String(3);
       NetDueDate  : Date;
       IsCleared   : Boolean;
-      Level       : HoldLevel default ''; // 'NONE', 'HOLD', 'BLOCK
+      Level       : HoldLevel default '';
+      HoldUntil   : Date; // end of a promise-to-pay hold; empty = held until removed
 }
 
 entity CustomerContacts {
